@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\ChairController;
 use App\Http\Controllers\FacilitatorController;
@@ -11,6 +9,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,46 +22,40 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::group(
-    ['prefix' => 'v1'],
-    function () {
-        Route::group([
-            'middleware' => 'api'
-        ], function () {
-            Route::post('inscripcionpublica', [InscriptionController::class, 'registroInscripcionPublic']);
-            Route::get('enviarcorreo', [InscriptionController::class, 'enviarCorreo']);
-            Route::get('getchairsopen', [ChairController::class, 'getChairsOpen']);
-            Route::group([
-                'prefix' => 'auth'
-            ], function ($router) {
-                Route::group([
-                    'middleware' => 'auth:sanctum'
-                ], function () {
-                    Route::post('logout', [AuthController::class, 'logout']);
-                    Route::post('me', [AuthController::class, 'me']);
-                });
-                Route::post('login', [AuthController::class, 'login']);
-            });
-            //usuarios autenticados
-            Route::group([
-                'middleware' => 'auth:sanctum'
-            ], function () {
-                Route::apiResources([
-                   'students'    =>        StudentController::class,
-                   'facilitators'    =>  FacilitatorController::class,
-                    'chairs'    =>        ChairController::class,
-                    'modules'    =>        ModuleController::class,
-                    'levels'    =>        LevelController::class,
-                    'users'        =>         UserController::class,
-                    'roles'        =>        RoleController::class
-                ]);
-                Route::group([
-                    'prefix' => 'inscriptions'
-                ], function ($router) {
-                    Route::get('/', [InscriptionController::class, 'getInscriptionPublic']);
-                    Route::get('updatestatus/{id}', [InscriptionController::class, 'changeStatus']);
-                });
-            });
+Route::group(['prefix' => 'v1'], function () {
+
+    // Rutas públicas
+    Route::post('auth/login', [AuthController::class, 'login']);
+
+    // Rutas protegidas con JWT
+    Route::group(['middleware' => 'jwt.auth'], function () {
+
+        // Rutas de inscripción
+        Route::post('inscripcionpublica', [InscriptionController::class, 'registroInscripcionPublic']);
+        Route::get('enviarcorreo', [InscriptionController::class, 'enviarCorreo']);
+        Route::get('getchairsopen', [ChairController::class, 'getChairsOpen']);
+
+        // Rutas de autenticación
+        Route::group(['prefix' => 'auth'], function () {
+            Route::post('logout', [AuthController::class, 'logout']);
+            Route::post('me', [AuthController::class, 'me']);
         });
-    }
-);
+
+        // Rutas de recursos protegidos
+        Route::apiResources([
+            'students'     => StudentController::class,
+            'facilitators' => FacilitatorController::class,
+            'chairs'       => ChairController::class,
+            'modules'      => ModuleController::class,
+            'levels'       => LevelController::class,
+            'users'        => UserController::class,
+            'roles'        => RoleController::class,
+        ]);
+
+        // Rutas adicionales de inscripción
+        Route::group(['prefix' => 'inscriptions'], function () {
+            Route::get('/', [InscriptionController::class, 'getInscriptionPublic']);
+            Route::get('updatestatus/{id}', [InscriptionController::class, 'changeStatus']);
+        });
+    });
+});

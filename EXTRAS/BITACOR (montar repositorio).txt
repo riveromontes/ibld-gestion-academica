@@ -1,0 +1,22 @@
+
+
+(Paso 1) Crear un nuevo repositorio:
+    - Ve a GitHub y crea un nuevo repositorio vacío.
+    - No inicialices el repositorio con un README, .gitignore o licencia.
+
+(Paso 2) Inicializar el repositorio local:
+    - Abre una terminal en la carpeta de tu proyecto local.
+    - Ejecuta los siguientes comandos:
+            git init
+            git add .
+            git commit -m "Commit inicial"
+
+(Paso 3) Vincular y subir al repositorio remoto:
+	- Añade el repositorio remoto:
+		git remote add origin https://github.com/tu-usuario/nuevo-repositorio.git
+	- En mi caso eso no funcionó porque ya estaba creado pero lo solucionamos cambiando la url
+		git remote set-url https://github.com/riveromontes/ibld-gestion-academica.git
+
+(Paso 4) Subir los cambios
+	git push -u origin master
+	4.A- Seleccionamos manager-core como "credential helper"
