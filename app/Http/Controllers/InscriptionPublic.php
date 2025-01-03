@@ -71,32 +71,43 @@ class InscriptionPublic extends Controller
         );
 	}
 	public function getBase64($file,$name,$cedula){
+		
+		
+		
 		//se obtiene el tipo de archivo
 		$data = explode('/', mime_content_type($file));
 
-		preg_match("/data:".$data[0]."\/(.*?);/",$file,$file_extension); // extract the image extension
- 		$file = preg_replace('/data:'.$data[0].'\/(.*?);base64,/','',$file); // remove the type part
- 		$file = str_replace(' ', '+', $file);
- 		//se comprueba los tipos de archivo de docx, doc y pdf
- 		switch ($data[1]) {
- 			case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
- 			$fileName = $name.$cedula.'.docx';
- 			break;
- 			case 'msword':
- 			$fileName = $name.$cedula.'.doc';
- 			break;
- 			case 'pdf':
- 			$fileName = $name.$cedula.'.pdf';
- 			break;
- 		}
- 		//se comprueba si es un tipo imagen y se le asigna la extension correspondiente
- 		if ($data[0] === 'image') {
+		if (!preg_match("/data:".$data[0]."\/(.*?);/",$file,$file_extension)) {
+			throw new \Exception('Archivo Base64 inválido.');
+		} // extract the image extension
 
- 			$fileName = $name.$cedula.'.'.$file_extension[1]; //generating unique file name;
- 		}
 
- 		Storage::disk('public')->put($cedula.'/'.$fileName,base64_decode($file));
- 		return $fileName;
+		
+		$data = explode('/', $matches[1]);
+		$file = substr($file, strpos($file, ',') + 1);
+		$file = base64_decode($file);
+	
+		if ($file === false) {
+			throw new \Exception('Error al decodificar el archivo base64.');
+		}
+	
+		switch ($data[1]) {
+			case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+				$fileName = $name . $cedula . '.docx';
+				break;
+			case 'msword':
+				$fileName = $name . $cedula . '.doc';
+				break;
+			case 'pdf':
+				$fileName = $name . $cedula . '.pdf';
+				break;
+			default:
+				$fileName = $name . $cedula . '.' . $data[1];
+				break;
+		}
+	
+		Storage::disk('public')->put($cedula . '/' . $fileName, $file);
+		return $fileName;
 
  	}
 
