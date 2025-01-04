@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Storage;
 class InscriptionPublic extends Controller
 {
 	public function inscripcion(CreateRequest $request){
+		\Log::info('Datos recibidos:', $request->all());
+		
 		try{
 
 			$data_user = [

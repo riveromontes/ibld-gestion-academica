@@ -104,11 +104,117 @@ class InscriptionController extends Controller
 
         return response()->json(['message' => 'Inscripción realizada con exito.', 'data' => $inscription]);
     }
+
+
     public function getBase64($file, $name, $cedula)
     {
         
+        \Log::debug('Contenido recibido: ', ['file' => $file]);
+        
+
+        try {
+            // Verificar que el archivo Base64 tenga el formato correcto
+            if (!str_starts_with($file, 'data:')) {
+                throw new \Exception('Archivo Base64 inválido: El archivo no tiene el formato esperado.');
+            }
+    
+            // Separar el encabezado del contenido Base64
+            list($header, $data) = explode(',', $file);
+            if (!$data) {
+                throw new \Exception('Archivo Base64 inválido: No se encuentra el contenido Base64.');
+            }
+    
+            // Extraer el tipo de archivo del encabezado
+            preg_match('/data:(.*?);base64/', $header, $matches);
+            if (!isset($matches[1])) {
+                throw new \Exception('No se pudo determinar el tipo de archivo del contenido Base64.');
+            }
+    
+            $mimeType = $matches[1];
+    
+            // Decodificar el contenido Base64
+            $decodedFile = base64_decode($data);
+            if ($decodedFile === false) {
+                throw new \Exception('Error al decodificar el archivo Base64: El contenido no es un Base64 válido.');
+            }
+    
+            // Definir la extensión del archivo según el tipo MIME
+            $extension = match ($mimeType) {
+                'application/pdf' => 'pdf',
+                'image/png' => 'png',
+                'image/jpeg' => 'jpg',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                'application/msword' => 'doc',
+                default => throw new \Exception('Tipo de archivo no soportado: ' . $mimeType)
+            };
+    
+            // Crear el nombre del archivo
+            $fileName = $name . $cedula . '.' . $extension;
+    
+            // Guardar el archivo en el disco público
+            $path = $cedula . '/' . $fileName;
+            $saved = Storage::disk('public')->put($path, $decodedFile);
+    
+            if (!$saved) {
+                throw new \Exception('Error al guardar el archivo en el sistema de almacenamiento.');
+            }
+    
+            return $fileName;
+    
+        } catch (\Exception $exception) {
+            // Loguear el error y devolver un mensaje específico
+            \Log::error("Error al procesar el archivo Base64: " . $exception->getMessage());
+            throw new \Exception('Error al cargar el archivo. Verifique que el archivo sea válido y vuelva a intentarlo.');
+        }
+
+
+
+//---------------------------------------------------------------------------------
+
+     /*        // Verificar que el archivo Base64 tenga el formato correcto
+    if (!str_starts_with($file, 'data:')) {
+        throw new \Exception('Archivo Base64 inválido.');
+    }
+
+    // Separar el encabezado del contenido Base64
+    list($header, $data) = explode(',', $file);
+
+    // Extraer el tipo de archivo del encabezado
+    preg_match('/data:(.*?);base64/', $header, $matches);
+    if (!isset($matches[1])) {
+        throw new \Exception('No se pudo determinar el tipo de archivo.');
+    }
+
+    $mimeType = $matches[1];
+
+    // Decodificar el contenido Base64
+    $decodedFile = base64_decode($data);
+    if ($decodedFile === false) {
+        throw new \Exception('Error al decodificar el archivo Base64.');
+    }
+
+    // Definir la extensión del archivo según el tipo MIME
+    $extension = match ($mimeType) {
+        'application/pdf' => 'pdf',
+        'image/png' => 'png',
+        'image/jpeg' => 'jpg',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'application/msword' => 'doc',
+        default => throw new \Exception('Tipo de archivo no soportado.')
+    };
+
+    // Crear el nombre del archivo
+    $fileName = $name . $cedula . '.' . $extension;
+
+    // Guardar el archivo en el disco público
+    Storage::disk('public')->put($cedula . '/' . $fileName, $decodedFile);
+
+    return $fileName; */
+
+
+//--------------------------------------------
 		
-		//se obtiene el tipo de archivo
+	/* 	//se obtiene el tipo de archivo
 		$data = explode('/', mime_content_type($file));
 
 		if (!preg_match("/data:".$data[0]."\/(.*?);/",$file,$file_extension)) {
@@ -141,7 +247,7 @@ class InscriptionController extends Controller
 		}
 	
 		Storage::disk('public')->put($cedula . '/' . $fileName, $file);
-		return $fileName;
+		return $fileName; */
 
  	}
 

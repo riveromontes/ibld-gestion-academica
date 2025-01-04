@@ -30,12 +30,12 @@ class CreateRequest extends FormRequest
             'direccion'=>'required',
             'telefono'=>'required',
             'correo'=>'required|unique:users,email',
-            'correo'=>'unique:users,email',
             'autorizacion_pastoral' => 'required',
             'cedula_file' => 'required',
             'foto' => 'required',
             'estudios_cursados' => 'required',
-            'planilla_ins' => 'required'
+            'planilla_ins' => 'required',
+            'chair' => 'required|integer|exists:chair_module,id'
         ];
     }
 
