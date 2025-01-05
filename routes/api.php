@@ -26,14 +26,19 @@ Route::group(['prefix' => 'v1'], function () {
 
     // Rutas públicas
     Route::post('auth/login', [AuthController::class, 'login']);
+    Route::post('inscripcionpublica', [InscriptionController::class, 'registroInscripcionPublic']);
+    Route::get('enviarcorreo', [InscriptionController::class, 'enviarCorreo']);
+    Route::get('getchairsopen', [ChairController::class, 'getChairsOpen']);
+
+
 
     // Rutas protegidas con JWT
     Route::group(['middleware' => 'jwt.auth'], function () {
 
         // Rutas de inscripción
-        Route::post('inscripcionpublica', [InscriptionController::class, 'registroInscripcionPublic']);
+        /* Route::post('inscripcionpublica', [InscriptionController::class, 'registroInscripcionPublic']);
         Route::get('enviarcorreo', [InscriptionController::class, 'enviarCorreo']);
-        Route::get('getchairsopen', [ChairController::class, 'getChairsOpen']);
+        Route::get('getchairsopen', [ChairController::class, 'getChairsOpen']); */
 
         // Rutas de autenticación
         Route::group(['prefix' => 'auth'], function () {

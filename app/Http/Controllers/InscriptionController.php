@@ -90,7 +90,7 @@ class InscriptionController extends Controller
         }
         try {
             $mailcontroller = new MailController;
-            $mailcontroller->enviarCorreoInscripcion($request->all());
+            //$mailcontroller->enviarCorreoInscripcion($request->all());
         } catch (\Throwable $exception) {
             if (isset($user)) {
                 $user->delete();
@@ -109,7 +109,9 @@ class InscriptionController extends Controller
     public function getBase64($file, $name, $cedula)
     {
         
-        \Log::debug('Contenido recibido: ', ['file' => $file]);
+        //\Log::debug('Nombre Archivo: ',['name' => $name]);
+        \Log::debug('Contenido: ',['file' => $file]);
+        
         
 
         try {
