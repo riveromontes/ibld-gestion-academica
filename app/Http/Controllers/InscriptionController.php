@@ -154,7 +154,7 @@ class InscriptionController extends Controller
             $fileName = $name . $cedula . '.' . $extension;
     
             // Guardar el archivo en el disco público
-            $path = 'documentacion/'.$cedula . '/' . $fileName;
+            $path = 'documentacion/' . $cedula . '/' . $fileName;
             $saved = Storage::disk('public')->put($path, $decodedFile);
     
             if (!$saved) {
