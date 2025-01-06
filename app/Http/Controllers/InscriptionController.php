@@ -90,7 +90,7 @@ class InscriptionController extends Controller
         }
         try {
             $mailcontroller = new MailController;
-            //$mailcontroller->enviarCorreoInscripcion($request->all());
+            $mailcontroller->enviarCorreoInscripcion($request->all());
         } catch (\Throwable $exception) {
             if (isset($user)) {
                 $user->delete();
@@ -154,14 +154,14 @@ class InscriptionController extends Controller
             $fileName = $name . $cedula . '.' . $extension;
     
             // Guardar el archivo en el disco público
-            $path = $cedula . '/' . $fileName;
+            $path = 'documentacion/'.$cedula . '/' . $fileName;
             $saved = Storage::disk('public')->put($path, $decodedFile);
     
             if (!$saved) {
                 throw new \Exception('Error al guardar el archivo en el sistema de almacenamiento.');
             }
     
-            return $fileName;
+            return $path;
     
         } catch (\Exception $exception) {
             // Loguear el error y devolver un mensaje específico
