@@ -1,0 +1,24 @@
+Esta bitacora tiene como objetivo cambiar la api Laravel que usa 
+Sanctum a tymon/jwt-auth y generar token JWT
+
+(Paso 1): Instalar el paquete tymon/jwt-auth en tu proyecto
+    1.A- composer require tymon/jwt-auth
+        En este caso se actualizó de 2.0.0 a 2.1.1
+            Arrojó 4 vulnerabilidades
+             - Para lo cual se hizo "composer update"
+    1.B- Publicamos el archivo de configuración del paquete 
+        php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+            - Esto generará el archivo config/jwt.php
+
+(Paso 2): Crear una nueva rama para implemntar tymon
+    2.A- git checkout -b refactor/implement-tymon-token
+        - Este comando crea la nueva rama y te cambia a ella automáticamente.
+
+(Paso 3): Genera la clave secreta para firmar los tokens
+    3.A- php artisan jwt:secret
+        - Esto añadirá una entrada JWT_SECRET en tu archivo .env
+
+(Paso 4): Configurar el modelo User
+    - Debe configurarse solo pues ya tenemos ese archivo creado
+
+    

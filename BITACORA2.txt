@@ -1,0 +1,121 @@
+1) Entrar en www de laragon desde la consola de laragon
+2) correr composer install en el directorio del proyecto
+    - Esto crea la carpeta vendor
+
+3) correr npm install
+    - Esto crea la carpeta node_modules
+
+4) Revisamos o creamos el archivo .env
+    - Con sus respectivas credenciales para conexion a la base de datos.
+
+5) Generamos la clave y la insertamos automaticamente a .env
+    - php artisan key:generate
+
+
+**************************** OBSERVACION **************************
+  
+    - Descarga PhpMyAdmin de su pagina oficial
+    - Se copia en laragon/www/etc/apps y se descomprime ahi
+    - Renombra la carpeta a solo phpMyAdmin (ojo con las mayusculas tal cual)
+    - Reinicia el laragon y ya puedes abrir localhost/phpMyAdmin
+
+*******************************************************************
+
+6) Ahora ejecutamos migraciones
+    - php artisan migrate 
+
+7) Se ejecutan los seeder 
+    - php artisan migrate --seed
+
+
+8) Entré al hosting y exporté la base de datos
+
+9) La copié en localhost
+
+10) Modifiqué el seeder para agregar un nuevo usuario llamado programador Web
+
+11) Corrí las migraciones
+
+12) Corrí el Seeder modificado
+
+
+
+
+
+
+
+////////////////////////////////////////////////////////////////////
+******************** PARA DEPURAR PHP ******************************
+///////////////////////////////////////////////////////////////////
+
+1) Vamos a php info
+    http://localhost/?Q=info
+
+2) Copiamos todo con ctr+a
+
+3) Pegamos en la página del Asistente de Xdebug:
+    https://xdebug.org/wizard
+
+4) Sigue las instrucciones
+
+5) Se instala la extension de VS de PHP DEBUG
+
+6) Ya puedes agregar los breakpoint en tu codigo
+
+7) En el archivo setting.json agrega el siguiente código.
+    //Indica el ejecutable php
+    - "php.validate.executablePath" : "C:\\laragon\\bin65\\php\\php-8.1.10-Win32-vs16-x64\\php.exe",    
+    //Indica el linter que se ejecuta el guardar o escribir
+    - "php.validate.run" : "onType",
+
+    //Indica el ejecutable de php
+    - "php.executablePath" : "C:\\laragon\\bin\\php\\php-8.1.10-Win32-vs16-x64\\php.exe"
+
+
+
+
+Vamos a instalar xdebug:
+    $ composer install xdebug
+
+Habilitar el módulo xdebug en nuestro servidor: 
+    $ sudo phpenmod xdebug
+
+PERO COMO USAMOS LARAGON ES DIRECTO EN LA CONFIGURACIÓN
+    - En VS la extenciòn es: PHP Debug.
+
+
+
+////////////////////////////////////////////////////////////////////
+******************** PARA DEPURAR PHP ******************************
+///////////////////////////////////////////////////////////////////
+
+
+
+endPoint
+----------------------------------------------------------------
+api/v1/auth/login
+
+necesita un JSON de entrada
+{
+    "email": "augustfer1@gmail.com",
+    "password": "12345"
+}
+
+Salida
+
+{
+    "status": true,
+    "message": "User logged in successfully",
+    "data": {
+        "id": 3,
+        "name": "Fernando Arreaza",
+        "email": "augustfer1@gmail.com",
+        "email_verified_at": null,
+        "created_at": "2024-12-23T12:54:55.000000Z",
+        "updated_at": "2024-12-23T12:54:55.000000Z"
+    },
+    "token": "1|B9wbUxR28BrcLgWa72BmSHwnHdvGz33YI2gquFqU353d3d72"
+}
+
+
+-----------------------------------------------------------------

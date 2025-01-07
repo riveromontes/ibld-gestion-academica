@@ -1,0 +1,96 @@
+1) Clonar el proyecto
+
+2) Cabiar el dueño
+   2.1- git remote -v (para ver el dueño)
+   2.2- git remote rename origin upstream (cambiar la rama)
+   2.3- git remote add origin http://github.com/riveromontes/ibld-gestion-academica.git (Nuevo dueño de la rama principal)
+
+3) composer install (Esto es necesario para instalar las dependencias del proyecto, que son removidas por el git)
+   3.1- composer update (solo en caso de hacer falta. AQUÍ NO FUE NECESARIO)
+
+4) Recuperamos el archivo de configuración (.env)
+   4.1- cp .env.example .env
+
+5) AÑADIR LA KEY DE SEGURIDAD
+   5.1- php artisan key:generate
+
+
+
+__________________________________________
+
+************ Base de Datos ***************
+__________________________________________
+
+
+1) DESCARGAR LA BASE DE DATOS
+
+2) CREAR LA BASE DE DATOS CON EL NOMBRE EN MYSQL
+
+3) IMPORTAR LA BASE DE DATOS
+
+4) COLOCAMOS LOS DATOS DE CONEXIÓN EN EL ARCHIVO DE CONFIGURACIÓN .env
+   4.1- DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=ibld0320_sistema_ibld
+        DB_USERNAME=root
+        DB_PASSWORD=
+
+
+5) CAMBIAR EL NOMBRE DE LA BASE DE DATOS EN config->database.php
+
+   5.1- 'database' => env('DB_DATABASE', 'ibld0320_sistema_ibld.sql'),
+
+__________________________________________
+
+COMUNICA TU DIRECTORIO storage CON public
+PARA EL GUARDADO DE IMAGENES Y DOCUMENTOS
+__________________________________________
+
+1) php artisan storage:link
+
+
+
+
+
+___________________________________________
+
+CARGAR CLASES AUTOMÁTICAMENTE, PARA EVITAR
+EL TÍPICO ERROR DE CLASE NO ENCONTRADA
+___________________________________________
+
+1) AGREGAR EL CARGADOR AUTOMÁTICO
+   1.1- composer dump-autoload
+
+
+
+
+___________________________________________
+
+PARA LAS MIGRACIONES CON LAS TABLAS PARA LA
+BASE DE DATOS
+___________________________________________
+
+
+SI NO HAY SEEDERS EN LA CARPETA database
+1) php artisan migrate --seed
+
+SINO HAY
+2) php artisan migrate
+
+(LA MIGRACIÓN SOLO SE USA AL INICIAR)
+
+
+
+___________________________________________
+
+AHORA A LEVANTAR EL PROYECTO
+___________________________________________
+
+php artisan serve
+
+
+
+
+
+es.linkedin.com/pulse/clona-con-éxito-un-proyecto-laravel-desde-github-garcía-muelas

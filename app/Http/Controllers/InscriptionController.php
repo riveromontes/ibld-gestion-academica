@@ -104,35 +104,155 @@ class InscriptionController extends Controller
 
         return response()->json(['message' => 'Inscripción realizada con exito.', 'data' => $inscription]);
     }
+
+
     public function getBase64($file, $name, $cedula)
     {
-        //se obtiene el tipo de archivo
-        $data = explode('/', mime_content_type($file));
+        
+        //\Log::debug('Nombre Archivo: ',['name' => $name]);
+        \Log::debug('Contenido: ',['file' => $file]);
+        
+        
 
-        preg_match("/data:" . $data[0] . "\/(.*?);/", $file, $file_extension); // extract the image extension
-        $file = preg_replace('/data:' . $data[0] . '\/(.*?);base64,/', '', $file); // remove the type part
-        $file = str_replace(' ', '+', $file);
-        //se comprueba los tipos de archivo de docx, doc y pdf
-        switch ($data[1]) {
-            case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
-                $fileName = $name . $cedula . '.docx';
-                break;
-            case 'msword':
-                $fileName = $name . $cedula . '.doc';
-                break;
-            case 'pdf':
-                $fileName = $name . $cedula . '.pdf';
-                break;
+        try {
+            // Verificar que el archivo Base64 tenga el formato correcto
+            if (!str_starts_with($file, 'data:')) {
+                throw new \Exception('Archivo Base64 inválido: El archivo no tiene el formato esperado.');
+            }
+    
+            // Separar el encabezado del contenido Base64
+            list($header, $data) = explode(',', $file);
+            if (!$data) {
+                throw new \Exception('Archivo Base64 inválido: No se encuentra el contenido Base64.');
+            }
+    
+            // Extraer el tipo de archivo del encabezado
+            preg_match('/data:(.*?);base64/', $header, $matches);
+            if (!isset($matches[1])) {
+                throw new \Exception('No se pudo determinar el tipo de archivo del contenido Base64.');
+            }
+    
+            $mimeType = $matches[1];
+    
+            // Decodificar el contenido Base64
+            $decodedFile = base64_decode($data);
+            if ($decodedFile === false) {
+                throw new \Exception('Error al decodificar el archivo Base64: El contenido no es un Base64 válido.');
+            }
+    
+            // Definir la extensión del archivo según el tipo MIME
+            $extension = match ($mimeType) {
+                'application/pdf' => 'pdf',
+                'image/png' => 'png',
+                'image/jpeg' => 'jpg',
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+                'application/msword' => 'doc',
+                default => throw new \Exception('Tipo de archivo no soportado: ' . $mimeType)
+            };
+    
+            // Crear el nombre del archivo
+            $fileName = $name . $cedula . '.' . $extension;
+    
+            // Guardar el archivo en el disco público
+            $path = 'documentacion/' . $cedula . '/' . $fileName;
+            $saved = Storage::disk('public')->put($path, $decodedFile);
+    
+            if (!$saved) {
+                throw new \Exception('Error al guardar el archivo en el sistema de almacenamiento.');
+            }
+    
+            return $path;
+    
+        } catch (\Exception $exception) {
+            // Loguear el error y devolver un mensaje específico
+            \Log::error("Error al procesar el archivo Base64: " . $exception->getMessage());
+            throw new \Exception('Error al cargar el archivo. Verifique que el archivo sea válido y vuelva a intentarlo.');
         }
-        //se comprueba si es un tipo imagen y se le asigna la extension correspondiente
-        if ($data[0] === 'image') {
 
-            $fileName = $name . $cedula . '.' . $file_extension[1]; //generating unique file name;
-        }
-        $fileNameFinal = 'documentacion/' . $cedula . '/' . $fileName;
-        Storage::disk('public')->put($fileNameFinal, base64_decode($file));
-        return $fileNameFinal;
+
+
+//---------------------------------------------------------------------------------
+
+     /*        // Verificar que el archivo Base64 tenga el formato correcto
+    if (!str_starts_with($file, 'data:')) {
+        throw new \Exception('Archivo Base64 inválido.');
     }
+
+    // Separar el encabezado del contenido Base64
+    list($header, $data) = explode(',', $file);
+
+    // Extraer el tipo de archivo del encabezado
+    preg_match('/data:(.*?);base64/', $header, $matches);
+    if (!isset($matches[1])) {
+        throw new \Exception('No se pudo determinar el tipo de archivo.');
+    }
+
+    $mimeType = $matches[1];
+
+    // Decodificar el contenido Base64
+    $decodedFile = base64_decode($data);
+    if ($decodedFile === false) {
+        throw new \Exception('Error al decodificar el archivo Base64.');
+    }
+
+    // Definir la extensión del archivo según el tipo MIME
+    $extension = match ($mimeType) {
+        'application/pdf' => 'pdf',
+        'image/png' => 'png',
+        'image/jpeg' => 'jpg',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => 'docx',
+        'application/msword' => 'doc',
+        default => throw new \Exception('Tipo de archivo no soportado.')
+    };
+
+    // Crear el nombre del archivo
+    $fileName = $name . $cedula . '.' . $extension;
+
+    // Guardar el archivo en el disco público
+    Storage::disk('public')->put($cedula . '/' . $fileName, $decodedFile);
+
+    return $fileName; */
+
+
+//--------------------------------------------
+		
+	/* 	//se obtiene el tipo de archivo
+		$data = explode('/', mime_content_type($file));
+
+		if (!preg_match("/data:".$data[0]."\/(.*?);/",$file,$file_extension)) {
+			throw new \Exception('Archivo Base64 inválido.');
+		} // extract the image extension
+
+
+		
+		$data = explode('/', $matches[1]);
+		$file = substr($file, strpos($file, ',') + 1);
+		$file = base64_decode($file);
+	
+		if ($file === false) {
+			throw new \Exception('Error al decodificar el archivo base64.');
+		}
+	
+		switch ($data[1]) {
+			case 'vnd.openxmlformats-officedocument.wordprocessingml.document':
+				$fileName = $name . $cedula . '.docx';
+				break;
+			case 'msword':
+				$fileName = $name . $cedula . '.doc';
+				break;
+			case 'pdf':
+				$fileName = $name . $cedula . '.pdf';
+				break;
+			default:
+				$fileName = $name . $cedula . '.' . $data[1];
+				break;
+		}
+	
+		Storage::disk('public')->put($cedula . '/' . $fileName, $file);
+		return $fileName; */
+
+ 	}
+
 
     public function logGenerate($user, $fecha, $mensaje, $codigo, $status, $tabla)
     {

@@ -1,0 +1,952 @@
+openapi: 3.0.3
+info:
+  title: ibld-gestion-academica
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/v1/auth/login:
+    post:
+      summary: 'Get a JWT via given credentials.'
+      operationId: getAJWTViaGivenCredentials
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/inscripcionpublica:
+    post:
+      summary: ''
+      operationId: postApiV1Inscripcionpublica
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: quam
+                  nullable: false
+                apellido:
+                  type: string
+                  description: ''
+                  example: aut
+                  nullable: false
+                cedula:
+                  type: string
+                  description: ''
+                  example: assumenda
+                  nullable: false
+                direccion:
+                  type: string
+                  description: ''
+                  example: nostrum
+                  nullable: false
+                telefono:
+                  type: string
+                  description: ''
+                  example: ut
+                  nullable: false
+                correo:
+                  type: string
+                  description: ''
+                  example: null
+                  nullable: false
+                autorizacion_pastoral:
+                  type: string
+                  description: ''
+                  example: numquam
+                  nullable: false
+                cedula_file:
+                  type: string
+                  description: ''
+                  example: nemo
+                  nullable: false
+                foto:
+                  type: string
+                  description: ''
+                  example: sint
+                  nullable: false
+                estudios_cursados:
+                  type: string
+                  description: ''
+                  example: iusto
+                  nullable: false
+                planilla_ins:
+                  type: string
+                  description: ''
+                  example: sit
+                  nullable: false
+              required:
+                - nombre
+                - apellido
+                - cedula
+                - direccion
+                - telefono
+                - autorizacion_pastoral
+                - cedula_file
+                - foto
+                - estudios_cursados
+                - planilla_ins
+      security: []
+  /api/v1/getchairsopen:
+    get:
+      summary: ''
+      operationId: getApiV1Getchairsopen
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/auth/logout:
+    post:
+      summary: 'Log the user out (Invalidate the token).'
+      operationId: logTheUserOutInvalidateTheToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/auth/me:
+    post:
+      summary: 'Get the authenticated User.'
+      operationId: getTheAuthenticatedUser
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/students:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: itaque
+                  nullable: false
+                apellido:
+                  type: string
+                  description: ''
+                  example: ad
+                  nullable: false
+                cedula:
+                  type: string
+                  description: ''
+                  example: dolores
+                  nullable: false
+                direccion:
+                  type: string
+                  description: ''
+                  example: sit
+                  nullable: false
+                telefono:
+                  type: string
+                  description: ''
+                  example: ut
+                  nullable: false
+                correo:
+                  type: string
+                  description: ''
+                  example: nesciunt
+                  nullable: false
+              required:
+                - nombre
+                - apellido
+                - cedula
+                - direccion
+                - telefono
+                - correo
+      security: []
+  '/api/v1/students/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        404:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Student] 5'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Student] 5'
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the student.'
+        example: 5
+        required: true
+        schema:
+          type: integer
+  /api/v1/facilitators:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: facere
+                  nullable: false
+                apellido:
+                  type: string
+                  description: ''
+                  example: vel
+                  nullable: false
+                cedula:
+                  type: string
+                  description: ''
+                  example: qui
+                  nullable: false
+                direccion:
+                  type: string
+                  description: ''
+                  example: mollitia
+                  nullable: false
+                telefono:
+                  type: string
+                  description: ''
+                  example: dolores
+                  nullable: false
+                correo:
+                  type: string
+                  description: ''
+                  example: sed
+                  nullable: false
+              required:
+                - nombre
+                - apellido
+                - cedula
+                - direccion
+                - telefono
+                - correo
+      security: []
+  '/api/v1/facilitators/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the facilitator.'
+        example: corporis
+        required: true
+        schema:
+          type: string
+  /api/v1/chairs:
+    get:
+      summary: ''
+      operationId: getApiV1Chairs
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiV1Chairs
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: dolores
+                  nullable: false
+                fecha_inicio:
+                  type: string
+                  description: ''
+                  example: quam
+                  nullable: false
+                ubicacion:
+                  type: string
+                  description: ''
+                  example: nobis
+                  nullable: false
+                coordinador:
+                  type: string
+                  description: ''
+                  example: ea
+                  nullable: false
+                inscripciones:
+                  type: string
+                  description: ''
+                  example: aliquid
+                  nullable: false
+              required:
+                - nombre
+                - fecha_inicio
+                - ubicacion
+                - coordinador
+                - inscripciones
+      security: []
+  '/api/v1/chairs/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1ChairsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiV1ChairsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: iste
+                  nullable: false
+                fecha_inicio:
+                  type: string
+                  description: ''
+                  example: eos
+                  nullable: false
+                ubicacion:
+                  type: string
+                  description: ''
+                  example: iusto
+                  nullable: false
+                coordinador:
+                  type: string
+                  description: ''
+                  example: tenetur
+                  nullable: false
+                inscripciones:
+                  type: string
+                  description: ''
+                  example: nisi
+                  nullable: false
+              required:
+                - nombre
+                - fecha_inicio
+                - ubicacion
+                - coordinador
+                - inscripciones
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiV1ChairsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the chair.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/modules:
+    get:
+      summary: ''
+      operationId: getApiV1Modules
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiV1Modules
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: facere
+                  nullable: false
+                level_id:
+                  type: string
+                  description: ''
+                  example: saepe
+                  nullable: false
+              required:
+                - nombre
+                - level_id
+      security: []
+  '/api/v1/modules/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1ModulesId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiV1ModulesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: magni
+                  nullable: false
+                level_id:
+                  type: string
+                  description: ''
+                  example: ut
+                  nullable: false
+              required:
+                - nombre
+                - level_id
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the module.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/levels:
+    get:
+      summary: ''
+      operationId: getApiV1Levels
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiV1Levels
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: dolorem
+                  nullable: false
+              required:
+                - nombre
+      security: []
+  '/api/v1/levels/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1LevelsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiV1LevelsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: ''
+                  example: quia
+                  nullable: false
+              required:
+                - nombre
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the level.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/users:
+    get:
+      summary: 'Display a listing of the resource.'
+      operationId: displayAListingOfTheResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: 'Store a newly created resource in storage.'
+      operationId: storeANewlyCreatedResourceInStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: ''
+                  example: dignissimos
+                  nullable: false
+                apellido:
+                  type: string
+                  description: ''
+                  example: minus
+                  nullable: false
+                cedula:
+                  type: string
+                  description: ''
+                  example: sed
+                  nullable: false
+                direccion:
+                  type: string
+                  description: ''
+                  example: animi
+                  nullable: false
+                telefono:
+                  type: string
+                  description: ''
+                  example: voluptatum
+                  nullable: false
+                email:
+                  type: string
+                  description: ''
+                  example: sit
+                  nullable: false
+              required:
+                - name
+                - apellido
+                - cedula
+                - direccion
+                - telefono
+                - email
+      security: []
+  '/api/v1/users/{id}':
+    get:
+      summary: 'Display the specified resource.'
+      operationId: displayTheSpecifiedResource
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: 'Remove the specified resource from storage.'
+      operationId: removeTheSpecifiedResourceFromStorage
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the user.'
+        example: 1
+        required: true
+        schema:
+          type: integer
+  /api/v1/roles:
+    get:
+      summary: ''
+      operationId: getApiV1Roles
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+  /api/v1/inscriptions:
+    get:
+      summary: ''
+      operationId: getApiV1Inscriptions
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+  '/api/v1/inscriptions/updatestatus/{id}':
+    get:
+      summary: ''
+      operationId: getApiV1InscriptionsUpdatestatusId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Token not provided'
+                properties:
+                  message:
+                    type: string
+                    example: 'Token not provided'
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the updatestatus.'
+        example: ut
+        required: true
+        schema:
+          type: string
+tags:
+  -
+    name: Endpoints
+    description: ''
