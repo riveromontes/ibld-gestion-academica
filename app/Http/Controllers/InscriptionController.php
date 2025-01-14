@@ -19,6 +19,9 @@ class InscriptionController extends Controller
 {
     public function registroInscripcionPublic(CreateRequest $request)
     {
+
+        
+
         try {
             $fecha = Carbon::now();
             $usuario = $request->nombre . ' ' . $request->apellido;
@@ -110,7 +113,7 @@ class InscriptionController extends Controller
     {
         
         //\Log::debug('Nombre Archivo: ',['name' => $name]);
-        \Log::debug('Contenido: ',['file' => $file]);
+        //\Log::debug('Contenido: ',['file' => $file]);
         
         
 
@@ -165,7 +168,7 @@ class InscriptionController extends Controller
     
         } catch (\Exception $exception) {
             // Loguear el error y devolver un mensaje específico
-            \Log::error("Error al procesar el archivo Base64: " . $exception->getMessage());
+            //\Log::error("Error al procesar el archivo Base64: " . $exception->getMessage());
             throw new \Exception('Error al cargar el archivo. Verifique que el archivo sea válido y vuelva a intentarlo.');
         }
 

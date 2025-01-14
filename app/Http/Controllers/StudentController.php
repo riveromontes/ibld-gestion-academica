@@ -16,7 +16,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students =Student::all();
+        $students = Student::all();
         return response()->json(['message'=>'Listado de todos los Estudiante','data'=>$students]);
     }
 

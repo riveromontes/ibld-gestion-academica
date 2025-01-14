@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\Storage;
 class InscriptionPublic extends Controller
 {
 	public function inscripcion(CreateRequest $request){
-		\Log::info('Datos recibidos:', $request->all());
+		//\Log::info('Datos recibidos:', $request->all());
 		
+
+
 		try{
 
 			$data_user = [
@@ -47,6 +49,7 @@ class InscriptionPublic extends Controller
 		}catch(\Exception $exception){
 			$user->delete();
 			return response()->json(['message'=>$exception->getMessage()]);
+			
 		}
 		try{
 			$inscripcion = [
@@ -66,6 +69,7 @@ class InscriptionPublic extends Controller
 		}catch(\Exception $exception){
 			$user->delete();
 			return response()->json(['message'=>$exception->getMessage()]);
+			
 		}
 		return response()->json([
             'message'=>'Inscripción realizada con exito.',

@@ -17,8 +17,8 @@ class FacilitatorController extends Controller
      */
     public function index()
     {
-        $facilitators =Facilitator::all();
-        return response()->json(['message'=>'Listado de todos los facilitadores','data'=>$facilitators]);
+        $facilitators = Facilitator::all();
+        return response()->json(['message'=>'Listado de todos los facilitadores','data'=>$facilitators],200);
     }
 
     /**
@@ -30,7 +30,7 @@ class FacilitatorController extends Controller
     public function store(FacilitatorCreateRequest $request)
     {
         $facilitator = Facilitator::create($request->all());
-        return response()->json(['message'=>'Facilitador agregado']);
+        return response()->json(['message'=>'Facilitador agregado'],200);
 
     }
 
@@ -42,7 +42,7 @@ class FacilitatorController extends Controller
      */
     public function show(Facilitator $facilitator)
     {
-        return response()->json(['message'=>'Información del facilitador','data'=>$facilitator]);
+        return response()->json(['message'=>'Información del facilitador','data'=>$facilitator],200);
 
     }
 
@@ -56,7 +56,7 @@ class FacilitatorController extends Controller
     public function update(FacilitatorUpdateRequest $request, Facilitator $facilitator)
     {
         $facilitator->update($request->all());
-        return response()->json(['message'=>'Facilitador actualizado.','data'=>$facilitator]);
+        return response()->json(['message'=>'Facilitador actualizado.','data'=>$facilitator],200);
     }
 
     /**
@@ -68,6 +68,6 @@ class FacilitatorController extends Controller
     public function destroy(Facilitator $facilitator)
     {
         $facilitator->delete();
-        return response()->json(['message'=>'Facilitator eliminado.']);
+        return response()->json(['message'=>'Facilitator eliminado.'],200);
     }
 }
