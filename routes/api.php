@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
         // Rutas adicionales de inscripción
         Route::group(['prefix' => 'inscriptions'], function () {
             Route::get('/', [InscriptionController::class, 'getInscriptionPublic']);
-            Route::get('updatestatus/{id}', [InscriptionController::class, 'changeStatus']);
+            Route::post('updatestatus/{id}', [InscriptionController::class, 'changeStatus']);
         });
     });
 });
