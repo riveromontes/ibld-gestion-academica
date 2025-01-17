@@ -55,7 +55,7 @@ Route::group(['prefix' => 'v1'], function () {
             'levels'       => LevelController::class,
             'users'        => UserController::class,
             'roles'        => RoleController::class,
-            'payments'        => PaymentController::class,
+            'payments'     => PaymentController::class,
         ]);
 
         // Rutas adicionales de inscripción
