@@ -49,4 +49,28 @@ class ChairController extends Controller
         $chairs = Chair::with('modules')->where('inscripciones', 1)->get();
         return response()->json(['message' => 'Listado de catedras', 'data' => $chairs], 200);
     }
+
+    public function updateInscripciones(Request $request, $id)
+    {
+        // Valida que el campo "inscripciones" sea enviado en el request
+        $request->validate([
+            'inscripciones' => 'required|boolean', // Asegúrate de que sea un valor booleano
+        ]);
+    
+        // Busca la cátedra por ID
+        $chair = Chair::find($id);
+    
+        if (!$chair) {
+            return response()->json(['message' => 'Cátedra no encontrada'], 404);
+        }
+    
+        // Actualiza el campo "inscripciones"
+        $chair->inscripciones = $request->inscripciones;
+        $chair->save();
+    
+        return response()->json(['message' => 'Campo "inscripciones" actualizado.', 'data' => $chair], 200);
+    }
+
+
+
 }

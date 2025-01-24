@@ -58,6 +58,9 @@ Route::group(['prefix' => 'v1'], function () {
             'payments'     => PaymentController::class,
         ]);
 
+        Route::patch('chairs/{id}/inscripciones', [ChairController::class, 'updateInscripciones']);
+
+
         // Rutas adicionales de inscripción
         Route::group(['prefix' => 'inscriptions'], function () {
             Route::get('/', [InscriptionController::class, 'getInscriptionPublic']);
