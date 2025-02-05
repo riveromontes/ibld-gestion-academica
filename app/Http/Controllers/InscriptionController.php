@@ -25,6 +25,26 @@ class InscriptionController extends Controller
         try {
             $fecha = Carbon::now();
             $usuario = $request->nombre . ' ' . $request->apellido;
+            
+            
+            // Verificar si el usuario ya existe en la base de datos por correo o cédula
+            $existingUser = User::where('email', $request->correo)->first();
+            $existingPerson = Person::where('cedula', $request->cedula)->orWhere('correo', $request->correo)->first();
+            $existingInscription = Inscription::whereHas('person', function ($query) use ($request) {
+                $query->where('cedula', $request->cedula);
+            })->first();
+
+            if ($existingUser || $existingPerson || $existingInscription) {
+                return response()->json([
+                    'message' => 'El usuario ya está registrado o tiene una inscripción activa.',
+                    'status' => 400
+                ], 400);
+            }
+            
+            
+            
+            
+            
             DB::beginTransaction();
             $data_user = [
                 "email" => $request->correo,
@@ -109,12 +129,10 @@ class InscriptionController extends Controller
     }
 
 
+
+
     public function getBase64($file, $name, $cedula)
     {
-        
-        //\Log::debug('Nombre Archivo: ',['name' => $name]);
-        //\Log::debug('Contenido: ',['file' => $file]);
-        
         
 
         try {
