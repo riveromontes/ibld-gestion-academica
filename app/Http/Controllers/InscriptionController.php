@@ -26,9 +26,10 @@ class InscriptionController extends Controller
             $fecha = Carbon::now();
             $usuario = $request->nombre . ' ' . $request->apellido;
             
-            
+            //VOY A COMENTAR TODO ESTE BLOQUE PORQUE CREO QUE ME ESTÁ DANDO ERROR
+            //******************************************************************************* */
             // Verificar si el usuario ya existe en la base de datos por correo o cédula
-            $existingUser = User::where('email', $request->correo)->first();
+           /*  $existingUser = User::where('email', $request->correo)->first();
             $existingPerson = Person::where('cedula', $request->cedula)->orWhere('correo', $request->correo)->first();
             $existingInscription = Inscription::whereHas('person', function ($query) use ($request) {
                 $query->where('cedula', $request->cedula);
@@ -39,9 +40,9 @@ class InscriptionController extends Controller
                     'message' => 'El usuario ya está registrado o tiene una inscripción activa.',
                     'status' => 400
                 ], 400);
-            }
+            } */
             
-            
+            //************************************************************************************* */
             
             
             

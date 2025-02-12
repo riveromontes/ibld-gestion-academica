@@ -60,6 +60,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::patch('chairs/{id}/inscripciones', [ChairController::class, 'updateInscripciones']);
 
+        
 
         // Rutas adicionales de inscripción
         Route::group(['prefix' => 'inscriptions'], function () {
