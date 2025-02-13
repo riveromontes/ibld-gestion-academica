@@ -30,10 +30,10 @@ class CreateRequest extends FormRequest
         return [
             'nombre'=>'required',
             'apellido'=>'required',
-            'cedula'=>'required|unique:persons',
+            'cedula'=>'required',
             'direccion'=>'required',
             'telefono'=>'required',
-            'correo'=>'required|unique:users,email',
+            'correo'=>'required',
             'autorizacion_pastoral' => 'required',
             'cedula_file' => 'required',
             'foto' => 'required',
@@ -43,23 +43,23 @@ class CreateRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'correo.unique' => 'El correo ya esta en uso, debe contactar con algun administrador.',
-            'cedula.unique' => 'La cedula ya esta en uso, debe contactar con algun administrador.',
-        ];
-    }
+    // public function messages()
+    // {
+    //     return [
+    //         'correo.unique' => 'El correo ya esta en uso, debe contactar con algun administrador.',
+    //         'cedula.unique' => 'La cedula ya esta en uso, debe contactar con algun administrador.',
+    //     ];
+    // }
 
 
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'status' => 'error',
-            'message' => 'Error de validación',
-            'errors' => $validator->errors()
-        ], 422));
-    }
-
+     public function failedValidation(Validator $validator)
+     {
+         throw new HttpResponseException(response()->json([
+             'status' => 'error',
+             'message' => 'Error de validación',
+             'errors' => $validator->errors()
+         ], 422));
+    } 
+ 
 
 }

@@ -16,4 +16,11 @@ class Person extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function inscriptions()
+    {
+        return $this->hasMany(Inscription::class, 'person_id');
+    }
+
+
 }
