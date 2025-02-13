@@ -3,6 +3,10 @@
 namespace App\Http\Requests\Inscription;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
+
 
 class CreateRequest extends FormRequest
 {
@@ -45,5 +49,17 @@ class CreateRequest extends FormRequest
             'correo.unique' => 'El correo ya esta en uso, debe contactar con algun administrador.',
             'cedula.unique' => 'La cedula ya esta en uso, debe contactar con algun administrador.',
         ];
-}
+    }
+
+
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => 'Error de validación',
+            'errors' => $validator->errors()
+        ], 422));
+    }
+
+
 }
