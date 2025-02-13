@@ -21,15 +21,18 @@ class InscriptionController extends Controller
     {
 
         
+        
+        
 
         try {
+
             $fecha = Carbon::now();
             $usuario = $request->nombre . ' ' . $request->apellido;
-            
+
             //VOY A COMENTAR TODO ESTE BLOQUE PORQUE CREO QUE ME ESTÁ DANDO ERROR
             //******************************************************************************* */
             // Verificar si el usuario ya existe en la base de datos por correo o cédula
-           /*  $existingUser = User::where('email', $request->correo)->first();
+            $existingUser = User::where('email', $request->correo)->first();
             $existingPerson = Person::where('cedula', $request->cedula)->orWhere('correo', $request->correo)->first();
             $existingInscription = Inscription::whereHas('person', function ($query) use ($request) {
                 $query->where('cedula', $request->cedula);
@@ -40,11 +43,24 @@ class InscriptionController extends Controller
                     'message' => 'El usuario ya está registrado o tiene una inscripción activa.',
                     'status' => 400
                 ], 400);
-            } */
+            }
+           
+        } catch (\Throwable $exception) {
+            if (isset($user)) {
+                $user->delete();
+            }
+            $mensaje = $exception->getMessage();
+            $this->logGenerate($usuario, $fecha, 'al crear archivo' . $mensaje, $exception->getCode(), 'error', 'crear archivo');
             
-            //************************************************************************************* */
-            
-            
+            //dd($exception->getMessage());
+            return response()->json(['message' => 'Error inesperado inicial.'], 400);
+        }
+
+
+
+        try {
+            //$fecha = Carbon::now();
+            //$usuario = $request->nombre . ' ' . $request->apellido;
             
             DB::beginTransaction();
             $data_user = [
@@ -70,6 +86,8 @@ class InscriptionController extends Controller
             }
             $mensaje = $exception->getMessage();
             $this->logGenerate($usuario, $fecha, $mensaje, $exception->getCode(), 'error', 'persona o usuario');
+            
+            //dd($exception->getMessage());
             return response()->json(['message' => 'Error al crear el usuario o la persona.', 'status' => $exception->getCode()], 400);
         }
 
@@ -85,8 +103,11 @@ class InscriptionController extends Controller
             }
             $mensaje = $exception->getMessage();
             $this->logGenerate($usuario, $fecha, 'al crear archivo' . $mensaje, $exception->getCode(), 'error', 'crear archivo');
+            
+            //dd($exception->getMessage());
             return response()->json(['message' => 'Error al cargar los archivos.'], 400);
         }
+
         try {
             $inscripcion = [
                 "fecha_inscripcion" => $date_now = Date('Y-m-d'),
@@ -103,15 +124,17 @@ class InscriptionController extends Controller
             ];
 
             $inscription = Inscription::create($inscripcion);
-
         } catch (\Throwable $exception) {
             if (isset($user)) {
                 $user->delete();
             }
             $mensaje = $exception->getMessage();
             $this->logGenerate($usuario, $fecha, $mensaje, $exception->getCode(), 'error', 'inscriptions');
+            
+            //dd($exception->getMessage());
             return response()->json(['message' => 'Error al registrar la inscripción.'], 400);
         }
+
         try {
             $mailcontroller = new MailController;
             //$mailcontroller->enviarCorreoInscripcion($request->all());
@@ -121,12 +144,30 @@ class InscriptionController extends Controller
             }
             $mensaje = $exception->getMessage();
             $this->logGenerate($usuario, $fecha, $mensaje, $exception->getCode(), 'error', 'enviar correo');
+            
+            //dd($exception->getMessage());
             return response()->json(['message' => 'Error al intentar enviar el correo, vuelva a registrar su inscripción o contacte con soporte. '], 400);
         }
 
-        $this->logGenerate($usuario, $fecha, 'Se creo la inscripcion correctamente', 200, 'error', 'inscriptions');
 
-        return response()->json(['message' => 'Inscripción realizada con exito.', 'data' => $inscription]);
+        try {
+            $this->logGenerate($usuario, $fecha, 'Se creo la inscripcion correctamente', 200, 'error', 'inscriptions');
+            return response()->json(['message' => 'Inscripción realizada con exito.', 'data' => $inscription]);
+      
+        } catch (\Throwable $exception) {
+            if (isset($user)) {
+                $user->delete();
+            }
+            $mensaje = $exception->getMessage();
+            $this->logGenerate($usuario, $fecha, $mensaje, $exception->getCode(), 'error', 'inesperado');
+            
+            //dd($exception->getMessage());
+            return response()->json(['message' => 'Error inesperado. '], 400);
+       
+        }
+        
+        
+       
     }
 
 
@@ -302,6 +343,7 @@ class InscriptionController extends Controller
 
         return response()->json(['message' => 'Listado de inscripciones.', 'data' => $inscriptions]);
     }
+
     public function changeStatus(Request $request, $id)
     {
         $status = $request->status_inscripcion;
